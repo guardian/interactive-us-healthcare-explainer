@@ -12,17 +12,27 @@
 
 .interactive-chart {
     height: 400vh;
+    position: relative;
 
     svg {
         position: -webkit-sticky;
         position: sticky;
         top: 0;
         overflow: visible;
-        height: 100vh;
-
+        height: 100vh; // display: block;
         .country-label {
-            fill: #333;
+            fill: #333; // font-weight: bld
             @include fs-textSans(1);
+            @include mq(tablet) {
+                @include fs-textSans(2);
+            }
+        }
+    }
+
+    .y-axis {
+        opacity: 0.3;
+        line {
+            stroke-dasharray: 1, 1;
         }
     }
 
@@ -43,15 +53,20 @@
             @include mq(wide) {
                 margin-left: 240px;
             }
+
+            p {
+                margin-left: 0 !important;
+            }
         }
 
         p {
             display: inline;
-            background-color: #484f53;
-            color: #fff;
+            background-color: rgba(230, 230, 230, 0.95);
+            color: #333;
             padding: 5px 5px 5px 5px;
             box-decoration-break: clone;
             -webkit-box-decoration-break: clone;
+
             @include fs-headline(2);
             line-height: 28px;
             @include mq(tablet) {
@@ -59,23 +74,72 @@
                 @include fs-headline(3);
                 line-height: 32px; // padding-bottom: 24px;
             }
+
+            span {
+                color: #69d1ca;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.tick {
+    @include fs-textSans(2);
+    text {
+        transform: translateY(2px);
+    }
+
+    &:first-of-type {
+        @include mq($until: tablet) {
+            text {
+                text-anchor: start;
+                transform: translate(-4px, 2px);
+            }
+        }
+    }
+}
+
+#hidden-svg {
+    display: none;
+}
+
+.interactive-chart-2 {
+    @include mq(tablet) {
+        width: 620px;
+        margin-bottom: 24px;
+    }
+    @include mq(leftCol) {
+        margin-left: 160px;
+    }
+    @include mq(wide) {
+        margin-left: 240px;
+    }
+
+    svg {
+        // position: -webkit-sticky;
+        // position: sticky;
+        top: 0;
+        overflow: visible; // height: 100vh;
+        .country-label {
+            fill: #333;
+            @include fs-textSans(2);
+        }
+
+        .y-axis {
+            .domain {
+                display: none;
+            }
+
+            .tick line {
+                stroke: #dcdcdc;
+                stroke-dasharray: 1, 1;
+            }
         }
     }
 
-    .tick {
-        @include fs-textSans(2);
-        text {
-            transform: translateY(2px);
-        }
-
-        &:first-of-type {
-            @include mq($until: tablet) {
-                text {
-                    text-anchor: start;
-                    transform: translate(-4px, 2px);
-                }
-            }
-        }
+    .year-label {
+        @include fs-textSans(1);
+        color: #767676;
     }
 }
 
@@ -85,4 +149,92 @@
     fill: #fff;
     text-anchor: middle;
     font-weight: 400;
+}
+
+
+//hack the app
+.article--standard {
+    overflow: visible;
+}
+
+
+.pulsing {
+    fill: #69d1ca;
+    animation: pulse 2s infinite;
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        opacity: 0.75;
+        r: 0px;
+    }
+    100% {
+        r: 15px;
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes pulse {
+    0% {
+        opacity: 0.75;
+        r: 0px;
+    }
+    100% {
+        r: 15px;
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.75;
+        r: 0px;
+    }
+    100% {
+        r: 15px;
+        opacity: 0;
+    }
+}
+
+
+
+// table styling
+.interactive-table {
+    h3 {
+        @include fs-header(2);
+        margin-bottom: 0;
+    }
+
+    width: 100%;
+    overflow: hidden;
+
+    @include mq(tablet) {
+        width: 620px;
+        display: flex;
+    }
+    @include mq(leftCol) {
+        margin-left: 160px;
+    }
+    @include mq(wide) {
+        margin-left: 240px;
+    }
+}
+
+.table-cell {
+    &:first-of-type {
+        padding-left: 0;
+    }
+
+    &:last-of-type {
+        padding-right: 0;
+        border-right: 0;
+    }
+
+    @include mq(tablet) {
+        width: 33.3%;
+        padding-left: 5px;
+        padding-right: 5px;
+        border-right: 1px solid #eaeaea;
+        box-sizing: border-box;
+    }
 }
