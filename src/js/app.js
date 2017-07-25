@@ -39,7 +39,7 @@ const yScale = d3.scaleLinear().domain([1150000000, 0]).range([0, height]);
 const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d")).ticks((isMobile) ? 5 : 12);
 
 const formatNumber = d3.format(".0f"),
-    formatBillion = function(x) { return formatNumber(x / 1e9) + " billion people"; },
+    formatBillion = function(x) { return formatNumber(x / 1e9) + " billion"; },
     formatMillion = function(x) { return formatNumber(x / 1e6) + " million"; },
     formatThousand = function(x) { return formatNumber(x / 1e3) + " thousand"; };
 
@@ -96,18 +96,18 @@ function render(data) {
 
     const healthcarePopulationData = totalPopWithHealthCare(healthcareData);
 
-    barsG.append("g").html(`<g>
-        <g> 
-            <text transform="matrix(1 0 0 1 25.0609 72.6699)"><tspan x="0" y="0" style="font-family:'Guardian Text Sans Web'; font-size:16;">More people</tspan><tspan x="0" y="19.2" style="font-family:'Guardian Text Sans Web'; font-size:16;">with healthcare</tspan></text>
-            <line style="fill:none;stroke:#000000;stroke-width:2;" x1="10.061" y1="145.34" x2="10.061" y2="2.405"/>
-            <g>
-                <path d="M19.661,16.074c-0.465,0.297-1.084,0.158-1.381-0.309L10.061,2.861L1.842,15.766c-0.297,0.467-0.916,0.605-1.381,0.309
-                    c-0.465-0.297-0.6-0.92-0.307-1.383L9.217,0.463C9.401,0.176,9.719,0,10.061,0s0.66,0.176,0.844,0.463l9.063,14.229
-                    c0.105,0.168,0.156,0.354,0.156,0.537C20.123,15.559,19.959,15.883,19.661,16.074z"/>
-            </g>
-        </g>
-    </g>`)
-        .attr("transform", "translate(10," + (isMobile ? yScale(1000000000) : height * (2/3)) + ")");
+    // barsG.append("g").html(`<g>
+    //     <g> 
+    //         <text transform="matrix(1 0 0 1 25.0609 72.6699)"><tspan x="0" y="0" style="font-family:'Guardian Text Sans Web'; font-size:16;">More people</tspan><tspan x="0" y="19.2" style="font-family:'Guardian Text Sans Web'; font-size:16;">with healthcare</tspan></text>
+    //         <line style="fill:none;stroke:#000000;stroke-width:2;" x1="10.061" y1="145.34" x2="10.061" y2="2.405"/>
+    //         <g>
+    //             <path d="M19.661,16.074c-0.465,0.297-1.084,0.158-1.381-0.309L10.061,2.861L1.842,15.766c-0.297,0.467-0.916,0.605-1.381,0.309
+    //                 c-0.465-0.297-0.6-0.92-0.307-1.383L9.217,0.463C9.401,0.176,9.719,0,10.061,0s0.66,0.176,0.844,0.463l9.063,14.229
+    //                 c0.105,0.168,0.156,0.354,0.156,0.537C20.123,15.559,19.959,15.883,19.661,16.074z"/>
+    //         </g>
+    //     </g>
+    // </g>`)
+    //     .attr("transform", "translate(10," + (isMobile ? yScale(1000000000) : height * (2/3)) + ")");
 
     // solid block of population insured
     barsG.append("path")
@@ -168,6 +168,14 @@ function render(data) {
         .attr("dx", 10)
         .style("text-anchor", "start")
 
+    svg.select(".y-axis .tick").append("text")
+        .attr("fill", "#000")
+        .attr("x", 0)
+        .attr("y", -22)
+        .text("2016 population")
+        .style("font-weight", "bold")
+        .style("text-anchor", "start");
+
     svg.select(".y-axis .domain").remove();
 
     svg.select(".y-axis").node().lastChild.innerHTML = "";
@@ -175,14 +183,14 @@ function render(data) {
     healthcareLineEl
         .style("stroke-dasharray", lineLength)
         .style("stroke-dashoffset", lineLength);
-
     checkScroll(healthcareLineEl, elHeight, lineLength, healthcarePopulationData, healthcareLine, healthcareLineElDashed, healthcareData, svg, stackData, barsG);
 
 }
 
 function checkScroll(healthcareLineEl, elHeight, lineLength, healthcarePopulationData, healthcareLine, healthcareLineElDashed, healthcareData, svg, stackData, barsG) {
+    // console.log("h2")
     window.requestAnimationFrame(() => {
-        const scroll = window.scrollY;
+        const scroll = window.pageYOffset;
         if (scroll !== prevScroll) {
             const elOffset = interactiveChartEl.getBoundingClientRect().top + scroll;
             if (!featureTest('position', 'sticky') && !featureTest('position', '-webkit-sticky')) {
@@ -246,7 +254,6 @@ function doScrollEvent(healthcareLineEl, scrollDepth, lineLength, healthcarePopu
     if (prevCutOff !== cutOff) {
         try {
             const yearBoundaries = [healthcarePopulationData[prevCutOff], healthcarePopulationData[cutOff]];
-
             const newCountriesWithHealthcare = healthcareData.filter((d) => Number(d.start) > yearBoundaries[0].year && Number(d.start) <= yearBoundaries[1].year);
 
             if (newCountriesWithHealthcare.length > 0) {
@@ -559,6 +566,10 @@ function featureTest(property, value, noPrefixes) {
 
 // }
 
-const table = document.querySelector(".element-embed iframe");
-const tableHtml = table.getAttribute("srcdoc");
-table.parentNode.innerHTML = tableHtml;
+try {
+    const table = document.querySelector(".element-embed iframe");
+    const tableHtml = table.getAttribute("srcdoc");
+    table.parentNode.innerHTML = tableHtml;
+} catch(err) {
+    console.log(err);
+}

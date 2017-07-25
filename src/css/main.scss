@@ -36,16 +36,34 @@
         }
     }
 
+    .x-axis {
+        .domain {
+            stroke: #bdbdbd;
+        }
+
+        .tick {
+            line {
+                display: none;
+            }
+            text {
+                fill: #767676;
+                transform: translateY(0);
+            }
+        }
+    }
+
     .chart-text {
         position: absolute;
-        top: 60vh;
         z-index: 400;
+        width: 100%;
+        top: 60px;
 
         .text-wrapper {
-            margin-bottom: 60vh;
+            // margin-bottom: 60vh;
+            height: 100vh;
+            position: relative;
             @include mq(tablet) {
                 width: 620px;
-                margin-bottom: 75vh;
             }
             @include mq(leftCol) {
                 margin-left: 160px;
@@ -56,6 +74,13 @@
 
             p {
                 margin-left: 0 !important;
+            }
+
+            position: relative;
+            width: 100%;
+
+            &:last-of-type {
+                margin-top: -100px;
             }
         }
 
@@ -78,6 +103,15 @@
             span {
                 color: #69d1ca;
                 font-weight: bold;
+            }
+        }
+
+        .p-wrapper {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            @include mq(tablet) {
+                bottom: 10vh;
             }
         }
     }
@@ -196,21 +230,36 @@
     }
 }
 
+h3.table-heading {
+    @include fs-header(2);
+    font-weight: 500;
+    margin-bottom: 0;
+    margin-top: 12px;
 
+    @include mq(tablet) {
+        width: 620px;
+    }
+    @include mq(leftCol) {
+        margin-left: 160px;
+    }
+    @include mq(wide) {
+        margin-left: 240px;
+    }
+}
 
 // table styling
 .interactive-table {
-    h3 {
-        @include fs-header(2);
-        margin-bottom: 0;
-    }
+    margin-top: 6px;
 
     width: 100%;
     overflow: hidden;
+    padding-bottom: 4px;
+    margin-bottom: 6px;
 
     @include mq(tablet) {
         width: 620px;
         display: flex;
+        background-color: #fff; // margin: 0;
     }
     @include mq(leftCol) {
         margin-left: 160px;
@@ -221,20 +270,37 @@
 }
 
 .table-cell {
+    @include fs-textSans(4);
+    border-top: 1px solid #69d1ca;
+    padding-top: 2px;
+    background-color: #f6f6f6;
+    padding-bottom: 12px;
+    box-sizing: border-box;
+
     &:first-of-type {
-        padding-left: 0;
+        padding-left: 5px;
     }
 
     &:last-of-type {
-        padding-right: 0;
+        padding-right: 5px; //
         border-right: 0;
     }
 
     @include mq(tablet) {
-        width: 33.3%;
+        width: 45%;
+        width: calc(50% - 5px);
+        margin-right: 10px;
         padding-left: 5px;
-        padding-right: 5px;
-        border-right: 1px solid #eaeaea;
-        box-sizing: border-box;
+        padding-right: 5px; // border-right: 1px solid #eaeaea;
+        box-sizing: border-box; // border-right: 1px solid #eaeaea;
+    }
+
+    @include mq($until: tablet) {
+        padding: 0 5px 6px !important;
+
+        &:first-of-type {
+            padding-bottom: 2px !important;
+            margin-bottom: 6px;
+        }
     }
 }

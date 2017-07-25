@@ -1,10 +1,14 @@
+import rp from "request-promise"
+
+
 export async function render() {
+	const data = await rp({uri: "https://interactive.guim.co.uk/docsdata-test/1RzyDQJP2jG7wHVsy09vxMh73MkEXSz2P-O_wOJ1TLYk.json", json: true});
+
+	const text = data.paragraphs.reduce((t, p) => t + `<div class="text-wrapper"><div class="p-wrapper"><p>${p}</p></div></div>`, "");
+
     return `<div class="interactive-chart">
     			<div class="chart-text">
-    				<div class="text-wrapper"><p><span>Norway</span>... Nulla quis lorem ut libero malesuada feugiat. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus.</p></div>
-    				<div class="text-wrapper"><p>Japan... Nulla quis lorem ut libero malesuada feugiat. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus.</p></div>
-    				<div class="text-wrapper"><p>60s surge... Nulla quis lorem ut libero malesuada feugiat. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus.</p></div>
-    				<div class="text-wrapper"><p>US... Nulla quis lorem ut libero malesuada feugiat. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus.</p></div>
+    				${text}
     			</div>
     			<svg></svg>
     		</div><svg id="hidden-svg"><path></path></svg>
